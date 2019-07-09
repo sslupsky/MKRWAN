@@ -488,7 +488,7 @@ public:
 
   void maintain() {
     while (stream.available()) {
-      waitResponse(100);
+      waitResponse(10);
     }
   }
 
@@ -721,7 +721,7 @@ private:
 
   bool join() {
     sendAT(GF("+JOIN"));
-    if (waitResponse(60000L, "+EVENT=1,1") != 1) {
+    if (waitResponse(10000L, "+EVENT=1,1") != 1) {
       return false;
     }
     return true;
