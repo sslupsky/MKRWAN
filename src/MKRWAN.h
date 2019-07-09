@@ -708,6 +708,14 @@ public:
     return fcd;
   }
 
+  bool sendRXData() {
+    sendAT(GF("+RECV?"));
+    if (waitResponse(10) != 6) {
+      return false;
+    }
+    return true;
+  }
+
 
 private:
 
