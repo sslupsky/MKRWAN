@@ -891,6 +891,8 @@ private:
                 i++;
             }
           }
+          index = 6;
+          goto finish;
         }
       }
     } while (millis() - startMillis < timeout);
