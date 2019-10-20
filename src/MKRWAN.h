@@ -727,6 +727,22 @@ public:
     return true;
   }
 
+/**
+ * @brief Get the Join Status from the modem
+ * 
+ * @return int -1: if timeout or LORA_ERROR,
+ *              0: if not joined
+ *              1: if joined
+ */
+  int getJoinStatus() {
+    sendAT(GF("+NJS?"));
+    if (waitResponse(2000L) != 1) {
+      return -1;
+    }
+    streamSkipUntil('=');
+    return stream.readStringUntil('\r').toInt();
+  }
+
 
 private:
 
@@ -809,15 +825,6 @@ private:
       return 64;
     }
     sendAT(GF("+MSIZE?"));
-    if (waitResponse(2000L) != 1) {
-      return 0;
-    }
-    streamSkipUntil('=');
-    return stream.readStringUntil('\r').toInt();
-  }
-
-  size_t getJoinStatus() {
-    sendAT(GF("+NJS?"));
     if (waitResponse(2000L) != 1) {
       return 0;
     }
