@@ -743,6 +743,21 @@ public:
     return stream.readStringUntil('\r').toInt();
   }
 
+  /**
+   * @brief Get confirmation status of the last AT+SEND (0-1)
+   *        This can be used to poll the status of a confirmed uplink
+   *  Notes:  The McpsConfirmed() in lora.c (line 310) callback is called from LoRaMac.c (line 1378) when the mac state is idle. 
+   *          Presently, SX1276OnDio0Irq (sx1276.c line 1477) sends the "+ACK" string (line 1647) to the UART when a downlink is received.  This is incorrect.
+   *          It may be advantageous to notify the application using McpsConfirmed() when the uplink is confirmed.
+   * @return int 
+   */
+  int getCFS() {
+    int cfs = -1;
+    sendAT(GF("+CFS?"));
+    cfs = waitResponse("0", "1") - 1;
+    return cfs;
+  }
+
 
 private:
 
